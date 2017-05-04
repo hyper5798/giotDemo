@@ -79,7 +79,7 @@ if(debug){
 
 var settings = {
     httpAdminRoot:"/red",
-    httpNodeRoot: "/api",
+    httpNodeRoot: "/",
     userDir:"./.nodered/",
     functionGlobalContext: {
     	momentModule:require("moment"),

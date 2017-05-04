@@ -96,7 +96,7 @@
 								<td><%= device.info.temperature %>度</td>
 								<td><%= device.info.humidity %>%</td>
 								<td>
-								<% if (device.index == 'aa00') { %>
+								<% if (device.info.voltage ) { %>
 									<% if (device.info.voltage) { %>
 										<% if (device.info.voltage>350) {  %>
 											<button type="button" class="btn btn-success btn-sm" >

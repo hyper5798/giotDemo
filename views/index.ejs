@@ -316,9 +316,9 @@
 	});
 
     if(location.protocol=="https:"){
-		var wsUri="wss://"+window.location.hostname+":3000/api/ws/index";
+		var wsUri="wss://"+window.location.hostname+":3000/ws/index";
 	} else {
-		var wsUri="ws://"+window.location.hostname+":3000/api/ws/index";
+		var wsUri="ws://"+window.location.hostname+":3000/ws/index";
 	}
 	console.log('wsUri : '+wsUri);
 	var ws=null;
@@ -386,7 +386,7 @@
 			$("#light").text(data.info.light + 'lux');
 			//alert('index :'+ data.info.data0);
 			$("#uv").text(data.info.uv);
-			$("#rain").text(1023-data.info.rain);
+			$("#rain").text(data.info.rain);
 		}
 
 	});
@@ -407,7 +407,7 @@
 			hData.push([time,data[i].info.humidity]);
 			lData.push([time,data[i].info.light]);
 			uData.push([time,data[i].info.uv]);
-			rData.push([time,(1023-data[i].info.rain)]);
+			rData.push([time,data[i].info.rain]);
 		}
 		console.log('pData :'+JSON.stringify(pData));
 		if(pData.length==0){

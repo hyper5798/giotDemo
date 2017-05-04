@@ -386,10 +386,10 @@ module.exports = function(app){
 					return res.redirect('/find');
 				}
 
-				/*devices.forEach(function(device) {
-					console.log('mac:'+device.macAddr + ', data :' +device.data);
+				devices.forEach(function(device) {
+					console.log('device:'+JSON.stringify(device));
 					count = count +1;
-				});*/
+				});
 				//console.log('find type:'+findType);
 				//console.log('Debug find get mac '+find_mac+'-> find '+devices.length+' records');
 				console.log('Debug find device '+find_mac+'-> find '+devices);
