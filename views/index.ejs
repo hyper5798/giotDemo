@@ -1,0 +1,531 @@
+<%- include page/header_datepicker %>
+<!--<meta http-equiv="refresh" content="3600">-->
+	<div class="row">
+		<div class="col-md-8 column">
+			<div class="col-md-12 column">
+				<form method = "post" id="unitList" name="unitList">
+					<table width="100%" border="1">
+
+							<tr  height="80" align="center" bgcolor="#428bca">
+
+								<td>
+									<div class="fa fa-3x" style="color:white;">裝置</div>
+								</td>
+
+								<td>
+									<div class="fa fa-3x" style="color:white;">狀態</div>
+								</td>
+
+							</tr>
+
+
+						<% if (units) { %>
+							<% for(var i = 0;i<units.length;i++) { %>
+								<!--<tr align="center" bgcolor="#E3E3E3">-->
+								<tr height="80" align="center">
+									<td align="center">
+										<div  class="col-md-3">
+											<span class="pull-right">
+					                        	<img src="/images/icon_detecter.png" width="50" height="50">
+					                        </span>
+
+										</div>
+
+										<div class="col-md-9 fa fa-3x">
+											<span class="pull-left">
+					                        	<%= units[i].name %>
+					                        </span>
+
+										</div>
+
+									</td>
+									<td  align="center">
+										<% if(units[i].status == 0){ %>
+										   <img src="/images/btn_normal.png" width="80" height="40" name="status">
+										<% }else if(units[i].status == 1){ %>
+											<img src="/images/btn_alarm.png" width="80" height="40" name="status">
+										<% }else if(units[i].status == 2){ %>
+											<img src="/images/btn_loss.png" width="80" height="40" name="status">
+										<% } %>
+									</td>
+								</tr>
+							<% } %>
+						<% } %>
+
+					</table>
+				</form>
+			</div> <!-- col-md-12 column-->
+
+
+		    <% if (noWeatherDevice==false) { %>
+				<div class="col-md-12">
+					<br>
+		            <div class="form-group">
+		            	<div class="col-lg-2 col-md-2">
+		            		 <label>選擇時間</label>
+		            	</div>
+		            	<div class="col-lg-2 col-md-2">
+		            		<select id="time_option" name="time_option">
+			                     <option value="0">一小時</option>
+			    　               <option value="1">半小時</option>
+			    　               <option value="2">十分鐘</option>
+			    　               <option value="3">5分鐘</option>
+			                </select>
+						</div>
+						<div class="col-lg-2 col-md-2">
+		            		 <button>更新</button>
+		            	</div>
+		            </div> <!-- form-group -->
+		        </div> <!-- col-md-12 -->
+		    <% } %>
+			<% if (noWeatherDevice==false) { %>
+			<div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_pressure.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">氣壓</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="pressure" class="fa fa-2x">1000mb</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+	                         <div id="pChart" style="height:150px; width:100%;"></div>
+	                </div>
+	            </div>
+            </div>
+			<div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_temperature.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">溫度</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="temperature" class="fa fa-2x">28℃</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+
+	                         <div id="tChart" style="height:150px; width:100%;"></div>
+
+	                </div>
+		        </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_humidity.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">濕度</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="humidity" class="fa fa-2x">60%</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+
+	                         <div id="hChart" style="height:150px; width:100%;"></div>
+
+	                </div>
+	            </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_light.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">照明</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="light" class="fa fa-2x">420lux</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+
+	                         <div id="lChart" style="height:150px; width:100%;"></div>
+
+	                </div>
+	            </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_uv.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">紫外線</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="uv" class="fa fa-2x">4</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+
+	                         <div id="uChart" style="height:150px; width:100%;"></div>
+
+	                </div>
+	            </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-primary">
+	            	<div class="panel-heading">
+	            		<span class="pull-left">
+                    		<img src="/images/icon_rain.png" width="40" height="40">
+                        </span>
+						<span class="pull-left">
+							<div class="fa fa-2x">雨滴</div>
+						</span>
+                        <span class="pull-right">
+                    		 <div id="rain" class="fa fa-2x">1020</div>
+                    	</span>
+					</div>
+	                <div class="panel-body">
+
+	                         <div id="rChart" style="height:150px; width:100%;"></div>
+
+	                </div>
+	            </div>
+            </div>
+            <% } %>
+
+
+		</div> <!-- col-md-8 column-->
+		<div class="col-md-4 column col-centered">
+			<div class="col-md-12">
+				<a href="http://www.accuweather.com/en/tw/hualien-county/3369306/weather-forecast/3369306" class="aw-widget-legal">
+				<!--
+				By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.
+				-->
+				</a>
+				<div id="awtd1474449223149" class="aw-widget-36hour"  data-locationkey="" data-unit="c" data-language="zh-tw" data-useip="false" data-uid="awtd1474449223149" data-editlocation="false">
+				</div><!-- column-->
+			</div>
+		</div> <!-- col-md-4 column col-centered-->
+	</div>	<!--row-->
+	<div class="row">
+
+
+
+		<div class="col-md-12 column">
+			<label id="error_message" class="checkbox">
+	            <font color="red"><b></b>
+	            <% if (user.authz.a02==false) { %>
+	                你沒有權限,請通知管理員變更權限!
+	            <% } %>
+	        </label>
+		</div> <!-- column-->
+	</div>	<!--row-->
+
+
+<!-- （Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               刪除裝置警告
+            </h4>
+         </div>
+         <div class="modal-body">
+            確定刪除裝置嗎?
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default"
+               data-dismiss="modal">關閉
+            </button>
+            <button type="button" onClick="toSubmit()" class="btn btn-danger">
+               確定刪除
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+
+<script class="code" type="text/javascript">
+	//alert('reresh test');
+	var pData = [],tData = [],hData = [];
+	var lData = [],uData = [],rData = [];
+	var plot1,plot2,plot3,plot4,plot5,plot6;
+	var t = 1000;
+	var n = 60*60;
+	var max = (new Date()).getTime();
+    var min =  max - (n*1000);
+    var noDataTime =  max - (2*n*1000);
+	var options = {
+            axes: {
+                xaxis: {
+                    numberTicks: 6,
+                    renderer:$.jqplot.DateAxisRenderer,
+                    tickOptions:{formatString:'%H:%M:%S'}
+                },
+                yaxis: {
+                    numberTicks: 4,
+                    tickOptions:{formatString:'%d'}
+                }
+            },
+            seriesDefaults: {
+            	showLine: true,
+            	showMarker: true,
+            	fillAndStroke: true,
+            	fill: true,
+            	fillAlpha: 0.2,
+                rendererOptions: { smooth: true}
+            },
+            highlighter: {
+            	show: false
+            },
+            cursor: {
+            	show: true,
+            	tooltipLocation: 'se'
+            }
+        };
+	$(document).ready(function(){
+		setTimeout(doUpdate, t);
+    });
+
+	$('[name=time_option]').change(function() {
+    	$( "select option:selected" ).each(function() {
+	      //alert( $( this ).val() );
+	      if($( this ).val() == 0){
+	      	n = 60*60;//1 hours
+	      }else if($( this ).val() == 1){
+	      	n = 30*60;//half hours
+	      }else if($( this ).val() == 2){
+	      	n = 10*60;//10 minutes
+	      }else{
+	      	n = 5*60;//5 minutes
+	      }
+	    });
+		doUpdateOne();
+	});
+
+    if(location.protocol=="https:"){
+		var wsUri="wss://"+window.location.hostname+":3000/api/ws/index";
+	} else {
+		var wsUri="ws://"+window.location.hostname+":3000/api/ws/index";
+	}
+	console.log('wsUri : '+wsUri);
+	var ws=null;
+
+	function wsConn() {
+		ws = new WebSocket(wsUri);
+		ws.onmessage = function(m) {
+			//console.log('< from-node-red:',m.data);
+			if (typeof(m.data) === "string" && m. data !== null){
+				var msg =JSON.parse(m.data);
+				console.log("from-node-red : id:"+msg.id);
+				if(msg.id === 'init_get_data'){
+					console.log("init_get_data : v="+msg.v);
+				}else if(msg.id === 'init_update_data'){
+					console.log("init_update_data : type="+typeof(msg.v)+' , v='+msg.v);
+					var obj = JSON.parse(msg.v);
+					updateNewData(obj);
+				}
+			}
+		}
+		ws.onopen = function() {
+
+			connected = true;
+			var obj = {"id":"init","v":'init'};
+			var getRequest = JSON.stringify(obj);
+			console.log("getRequest type : "+ typeof(getRequest)+" : "+getRequest);
+			console.log("ws.onopen : "+ getRequest);
+			ws.send(getRequest);			// Request ui status from NR
+			console.log(getRequest);
+
+		}
+		ws.onclose   = function()  {
+			console.log('Node-RED connection closed: '+new Date().toUTCString());
+			connected = false;
+			ws = null;
+		}
+		ws.onerror  = function(){
+			console.log("connection error");
+		}
+	}
+    wsConn();
+
+	var socket = io.connect();
+	socket.on('connect',function(){
+        socket.emit('index_client','hello,index_client socket cient is ready');
+    });
+
+    $('button').click( function(){
+            /*doUpdate();
+            $(this).hide();*/
+        socket.emit('index_client','index_client hello,refresh weather data');
+    });
+
+
+    socket.on('index_weather_data',function(data){
+
+		if(data.index == 'aa01'){
+			/*alert('index :'+ data.info.data0);
+			alert('index :'+ data.info.data2);
+			alert('index :'+ data.info.data3);
+			alert('index :'+ data.info.data4);*/
+			$("#pressure").text(data.info.pressure + 'mb');
+			$("#temperature").text(data.info.temperature + '℃');
+			$("#humidity").text(data.info.humidity + '%');
+			$("#light").text(data.info.light + 'lux');
+			//alert('index :'+ data.info.data0);
+			$("#uv").text(data.info.uv);
+			$("#rain").text(1023-data.info.rain);
+		}
+
+	});
+	socket.on('index_weather_chart1_data',function(data){
+		pData = [];
+    	tData = [];
+    	hData = [];
+    	lData = [];
+    	uData = [];
+    	rData = [];
+		//alert(data.length);
+		for(var i=0 ; i<data.length; i++){
+			var date = (new Date(data[i].recv_at));
+			var time = date.getTime(); // current time
+			//alert(date+ " : " +data[i].info.data0 + ' : ' + data[i].info.data2 + typeof(data[i].info.data2));
+			pData.push([time,data[i].info.pressure]);
+			tData.push([time,data[i].info.temperature]);
+			hData.push([time,data[i].info.humidity]);
+			lData.push([time,data[i].info.light]);
+			uData.push([time,data[i].info.uv]);
+			rData.push([time,(1023-data[i].info.rain)]);
+		}
+		console.log('pData :'+JSON.stringify(pData));
+		if(pData.length==0){
+			pData.push([noDataTime,1000]);
+		}
+		if(tData.length==0){
+			tData.push([noDataTime,27]);
+		}
+		if(hData.length==0){
+			hData.push([noDataTime,75]);
+		}
+		if(lData.length==0){
+			lData.push([noDataTime,288]);
+		}
+		if(uData.length==0){
+			uData.push([noDataTime,2]);
+		}
+		if(rData.length==0){
+			rData.push([noDataTime,1]);
+		}
+		options.axes.xaxis.min = min;
+        options.axes.xaxis.max = max;
+		plot1 = $.jqplot ('pChart', [pData],options);
+		plot2 = $.jqplot ('tChart', [tData],options);
+		plot3 = $.jqplot ('hChart', [hData],options);
+		plot4 = $.jqplot ('lChart', [lData],options);
+		plot5 = $.jqplot ('uChart', [uData],options);
+		plot6 = $.jqplot ('rChart', [rData],options);
+	});
+
+	function updateNewData(data){
+		//alert('updateNewData'+JSON.stringify(data));
+		$("#pressure").text(data.info.pressure + 'mb');
+		$("#temperature").text(data.info.temperature + '℃');
+		$("#humidity").text(data.info.humidity + '%');
+		$("#light").text(data.info.light+ 'lux');
+		$("#uv").text(data.info.uv );
+		$("#rain").text( (1023-data.info.rain) );
+		var date = (new Date(data.recv));
+		var time = date.getTime();
+		pData.push([time,data.info.pressure]);
+		tData.push([time,data.info.temperature]);
+		hData.push([time,data.info.humidity]);
+		lData.push([time,data.info.light]);
+		uData.push([time,data.info.uv]);
+		rData.push([time,(1023-data.info.rain)]);
+		if(pData.length>100){
+			pData.shift();
+			tData.shift();
+			hData.shift();
+			lData.shift();
+			uData.shift();
+			rData.shift();
+		}
+	}
+
+
+	function chartUpdate(myplot,myData,myChart) {
+    	max = (new Date()).getTime();
+        min =  max - (n*1000);
+        //alert('min : '+min + " myData[0][0] : "+myData[0][0]);
+        /*if(myData[0][0]<min){
+        	myData.shift();
+        }*/
+
+        /*if (myplot) {
+            myplot.destroy();
+        }*/
+        //myplot.series[0].data = myData;
+        /*options.axes.xaxis.min = myData[0][0];
+        options.axes.xaxis.max = (new Date()).getTime();*/
+
+        options.axes.xaxis.min = min;
+        options.axes.xaxis.max = max;
+        myplot = $.jqplot (myChart, [myData],options).replot();
+    }
+
+    function updateSeries(myplot,myData) {
+    	max = (new Date()).getTime();
+        min =  max - (n*1000);
+	    myplot.series[0].data = myData;
+	    myplot.axes.xaxis.min = min;
+        myplot.axes.xaxis.max = max;
+	    myplot.replot();
+	}
+
+	function doUpdateOne() {
+        /*chartUpdate(plot1, pData,'pChart');
+        chartUpdate(plot2, tData,'tChart');
+        chartUpdate(plot3, hData,'hChart');
+        chartUpdate(plot4, lData,'lChart');
+        chartUpdate(plot5, uData,'uChart');
+        chartUpdate(plot6, rData,'rChart');*/
+        updateSeries(plot1, pData);
+        updateSeries(plot2, tData);
+        updateSeries(plot3, hData);
+        updateSeries(plot4, lData);
+        updateSeries(plot5, uData);
+        updateSeries(plot6, rData);
+    }
+
+    function doUpdate() {
+        //alert('doUpdate() ');
+        /*chartUpdate(plot1, pData,'pChart');
+        chartUpdate(plot2, tData,'tChart');
+        chartUpdate(plot3, hData,'hChart');
+        chartUpdate(plot4, lData,'lChart');
+        chartUpdate(plot5, uData,'uChart');
+        chartUpdate(plot6, rData,'rChart');*/
+        updateSeries(plot1, pData);
+        updateSeries(plot2, tData);
+        updateSeries(plot3, hData);
+        updateSeries(plot4, lData);
+        updateSeries(plot5, uData);
+        updateSeries(plot6, rData);
+        setTimeout(doUpdate, t);
+    }
+</script>
+<script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
+
+<%- include page/footer %>
